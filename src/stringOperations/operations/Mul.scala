@@ -6,9 +6,9 @@ import stringOperations.utils.Total
   * Created by Robert-PC on 9/21/2017.
   */
 
-case class ProductTotal(product: String = "0", traillingZeroes: Int = 0)
-
 object Mul {
+  case class ProductTotal(product: String = "0", traillingZeroes: Int = 0)
+
   private[stringOperations] def apply(x: String, y: String): String = {
     x.map(digit =>
       multiplyByDigit(y, digit)

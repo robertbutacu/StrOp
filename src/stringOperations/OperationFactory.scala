@@ -33,10 +33,9 @@ trait OperationFactory extends Handler{
   private def isDigitsOnly(x: StringNumber): Boolean = x().forall(_.isDigit)
 
   /*
-    There are 3 levels of validation:
+    There are 2 levels of validation:
       1. both operands are defined
-      2. both operands contain digits only, disregarding "-"
-      3. the "-" operand is currently placed ( first position )
+      2. both operands contain digits only
    */
 
   private def isValid(x: Option[StringNumber], y: Option[StringNumber], op: Operation): Option[(StringNumber, StringNumber)] = {

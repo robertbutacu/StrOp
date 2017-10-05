@@ -30,7 +30,7 @@ trait StreamsExamples extends OperationFactory{
       Stream.cons(
         compute(Some(start), Multiply, Some(start)).get,
         squaresBetween(
-          compute(Some(start), Add, Some(Pos("1"))).get, end
+          compute(Increment, Some(start)).get, end
         )
       )
     }
