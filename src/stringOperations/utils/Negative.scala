@@ -22,7 +22,15 @@ case class Negative(number: String = "0") extends StringNumber {
         else Positive(Sub(this.n, otherNumber))
     }
 
-  def -(that: StringNumber): StringNumber = ???
+  def -(that: StringNumber): StringNumber =
+    that match {
+      case Negative(otherNumber) =>
+        if(isBigger(this, that)) Negative(Sub(this.n, otherNumber))
+        else Positive(Sub(otherNumber, this.n))
+      case Positive(otherNumber) =>
+        if (isBigger(this, that)) Negative(Sub(this.n, otherNumber))
+        else Positive(Sub(otherNumber, this.n))
+    }
 
   def %(that: StringNumber): StringNumber = {
     require(that.number forall { e => e.toInt >= 0 && e.toInt <= 9})
@@ -47,5 +55,10 @@ case class Negative(number: String = "0") extends StringNumber {
 
   def -- : StringNumber = ???
 
-  def ^(other: StringNumber) : StringNumber = ???
+  def ^(that: StringNumber) : StringNumber = {
+    require(that match { case Positive(_) => true; case _ => false})
+
+    if(Mod(that.number, "2") == "0") Positive(FastExp(this.n, that.number))
+    else                             Negative(FastExp(this.n, that.number))
+  }
 }
