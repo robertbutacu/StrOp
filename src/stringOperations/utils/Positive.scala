@@ -15,6 +15,7 @@ case class Positive(number: String = "0") extends StringNumber {
       case Negative(otherNumber) => Negative(Mul(this.n, otherNumber))
     }
 
+
   def +(that: StringNumber): StringNumber =
     that match {
       case Positive(otherNumber) => Positive(Addi(this.n, otherNumber))
@@ -22,6 +23,7 @@ case class Positive(number: String = "0") extends StringNumber {
         if (isBigger(this, that)) Positive(Sub(this.n, otherNumber))
         else Negative(Sub(this.n, otherNumber))
     }
+
 
   def -(that: StringNumber): StringNumber = {
     that match {
@@ -32,6 +34,7 @@ case class Positive(number: String = "0") extends StringNumber {
     }
   }
 
+
   def %(that: StringNumber): StringNumber = {
     require(that.number forall { e => e.toInt >= 0 && e.toInt <= 9 })
 
@@ -40,6 +43,7 @@ case class Positive(number: String = "0") extends StringNumber {
       case Negative(otherNumber) => Negative(Mod(this.n, otherNumber))
     }
   }
+
 
   def /(that: StringNumber): StringNumber = {
     require(that.number forall { e => e.toInt >= 0 && e.toInt <= 9 })
@@ -50,9 +54,12 @@ case class Positive(number: String = "0") extends StringNumber {
     }
   }
 
+
   def ++ : StringNumber = ???
 
+
   def -- : StringNumber = ???
+
 
   def ^(other: StringNumber): StringNumber = {
     require(other match { case Positive(n) => true; case _ => false})
@@ -60,7 +67,9 @@ case class Positive(number: String = "0") extends StringNumber {
     Positive(FastExp(this.n, other.number))
   }
 
+
   def sqrt: StringNumber = ???
+
 
   def square: StringNumber = Positive(Sq(this.n))
 }
