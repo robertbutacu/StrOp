@@ -61,4 +61,6 @@ case class Positive(number: String = "0") extends StringNumber {
   }
 
   def sqrt: StringNumber = ???
+
+  def square: StringNumber = Positive(Sq(this.n))
 }

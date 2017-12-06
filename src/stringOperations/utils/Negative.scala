@@ -61,4 +61,6 @@ case class Negative(number: String = "0") extends StringNumber {
     if(Mod(that.number, "2") == "0") Positive(FastExp(this.n, that.number))
     else                             Negative(FastExp(this.n, that.number))
   }
+
+  def square: StringNumber = Positive(Sq(this.n))
 }
