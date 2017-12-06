@@ -60,10 +60,10 @@ trait Handler{
       case NoNegativeOperands   =>
         Some(Pos(Addi(x(), y())))
       case NegativeLeftOperand  =>
-        if (isBigger(x, y)) Some(Neg(Sub(x(), y())))
+        if (Utils.isBigger(x, y)) Some(Neg(Sub(x(), y())))
         else                Some(Pos(Sub(y(), x())))
       case NegativeRightOperand =>
-        if(isBigger(x, y)) Some(Pos(Sub(x(), y())))
+        if(Utils.isBigger(x, y)) Some(Pos(Sub(x(), y())))
         else               Some(Neg(Sub(y(), x())))
       case BothOperandsNegative =>
         Some(Neg(Addi(x(), y())))
@@ -85,14 +85,14 @@ trait Handler{
   def subtract(x: StringNumber, y: StringNumber): Option[StringNumber] = {
     getSigns(x, y) match {
       case NoNegativeOperands   =>
-        if(isBigger(y, x)) Some(Neg(Sub(y(), x())))
+        if(Utils.isBigger(y, x)) Some(Neg(Sub(y(), x())))
         else               Some(Pos(Sub(x(), y())))
       case NegativeLeftOperand  =>
         Some(Neg(Addi(x(), y())))
       case NegativeRightOperand =>
         Some(Pos(Addi(x(), y())))
       case BothOperandsNegative =>
-        if(isBigger(x, y)) Some(Neg(Sub(x(), y())))
+        if(Utils.isBigger(x, y)) Some(Neg(Sub(x(), y())))
         else               Some(Pos(Sub(y(), x())))
       case InvalidOperation     =>
         None
@@ -100,7 +100,7 @@ trait Handler{
   }
 
   def divide(x: StringNumber, y: StringNumber): Option[StringNumber] = {
-    if(isDivisorZero(y))
+    if(Utils.isDivisorZero(y))
       None
     else
       getSigns(x, y) match {
@@ -112,7 +112,7 @@ trait Handler{
   }
 
   def mod(x: StringNumber, y: StringNumber): Option[StringNumber] = {
-    if(isDivisorZero(y))
+    if(Utils.isDivisorZero(y))
       None
     else
       getSigns(x, y) match {
@@ -143,20 +143,5 @@ trait Handler{
       case (Pos(_), Pos(_)) => NoNegativeOperands
       case (_, _)           => InvalidOperation
     }
-  }
-
-  private def isDivisorZero(x: StringNumber): Boolean = x().dropWhile(_.equals('0')).isEmpty
-
-  /*
-  x is bigger than y in 2 cases:
-    1. longer size
-    2. same size, but, character for character, x is the first one to contain a bigger one.
- */
-
-  private def isBigger(x: StringNumber, y: StringNumber): Boolean = {
-    if (x().length > y().length || (x().length == y().length && x() > y()))
-      true
-    else
-      false
   }
 }

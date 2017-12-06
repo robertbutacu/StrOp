@@ -23,7 +23,7 @@ trait OperationFactory extends Handler{
   private def isValid(x: Option[StringNumber]): Option[StringNumber] = {
     x match{
       case Some(a) =>
-        if(isDigitsOnly(a)) Some(a) else None
+        Some(a).filter(isDigitsOnly)
       case None    =>
         None
     }
