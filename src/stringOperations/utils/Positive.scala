@@ -7,7 +7,7 @@ import stringOperations.utils.Utils._
 case class Positive(number: String = "0") extends StringNumber {
   require(number forall { p => p.toInt >= 0 && p.toInt <= 9 })
 
-  val n = number
+  val n: String = number
 
   def *(that: StringNumber): StringNumber =
     that match {
@@ -25,15 +25,29 @@ case class Positive(number: String = "0") extends StringNumber {
 
   def -(that: StringNumber): StringNumber = ???
 
-  def %(that: StringNumber): StringNumber = ???
+  def %(that: StringNumber): StringNumber = {
+    require(that.number forall { e => e.toInt >= 0 && e.toInt <= 9})
 
-  def /(that: StringNumber): StringNumber = ???
+    that match {
+      case Positive(otherNumber) => Positive(Mod(this.n, otherNumber))
+      case Negative(otherNumber) => Negative(Mod(this.n, otherNumber))
+    }
+  }
+
+  def /(that: StringNumber): StringNumber = {
+    require(that.number forall { e => e.toInt >= 0 && e.toInt <= 9})
+
+    that match {
+      case Positive(otherNumber) => Positive(Div(this.n, otherNumber))
+      case Negative(otherNumber) => Negative(Div(this.n, otherNumber))
+    }
+  }
 
   def ++ : StringNumber = ???
 
   def -- : StringNumber = ???
 
-  def ^ : StringNumber = ???
+  def ^(other: StringNumber) : StringNumber = ???
 
   def sqrt : StringNumber = ???
 }
