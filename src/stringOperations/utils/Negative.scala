@@ -4,7 +4,7 @@ import stringOperations.operations._
 import stringOperations.utils.Utils.isBigger
 
 case class Negative(number: String = "0") extends StringNumber {
-  require(number forall { e => e.toInt >= 0 && e.toInt <= 9 })
+  require(number forall { e => e.isDigit })
 
   val n: String = number
 
@@ -36,6 +36,7 @@ case class Negative(number: String = "0") extends StringNumber {
 
 
   def %(that: StringNumber): StringNumber = {
+    // change so that it is different from 0
     require(that.number forall { e => e.toInt >= 0 && e.toInt <= 9})
     that match {
       case Negative(otherNumber) => Positive(Mod(this.n, otherNumber))
