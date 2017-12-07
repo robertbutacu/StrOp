@@ -1,29 +1,28 @@
 package stringOperations.examples
 
-import stringOperations.OperationFactory
 import stringOperations.utils._
 
 /**
   * Created by Robert-PC on 9/25/2017.
   */
 
-trait StreamsExamples extends OperationFactory{
+trait StreamsExamples{
   //TODO
   lazy val squares: Stream[StringNumber] = Stream.empty
 
-  def squaresUpUntil(i: StringNumber): Stream[StringNumber] = {
+  def squaresUpUntil(i: StringNumber): Stream[StringNumber] = ??? /* {
     if (i == Pos())
       Stream.empty
     else
       Stream.cons(
-        compute(Square, Some(i)).getOrElse(Pos()),
+        i,
         squaresUpUntil(
           compute(Decrement, Some(i)).getOrElse(Pos())
         )
       )
-  }
+  }*/
 
-  def squaresBetween(start: StringNumber, end: StringNumber): Stream[StringNumber] = {
+  def squaresBetween(start: StringNumber, end: StringNumber): Stream[StringNumber] = ??? /* {
     if (start == end)
       Stream.empty
     else
@@ -43,5 +42,5 @@ trait StreamsExamples extends OperationFactory{
         Add,
         Some(e._2)
       ).get
-    }
+    }*/
 }

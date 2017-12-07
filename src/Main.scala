@@ -1,6 +1,5 @@
-import stringOperations.OperationFactory
-import stringOperations.utils.Positive
+import stringOperations.operators.Positive
 
-object Main extends App with OperationFactory{
+object Main extends App{
   println(Positive("2") square)
 }

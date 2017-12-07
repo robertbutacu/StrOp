@@ -1,7 +1,8 @@
-package stringOperations.utils
+package stringOperations.operators
 
 import stringOperations.operations._
 import stringOperations.utils.Utils._
+import stringOperations.utils.{Pos, StringNumber}
 
 
 case class Positive(number: String = "0") extends StringNumber {
