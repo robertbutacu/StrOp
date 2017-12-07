@@ -3,66 +3,67 @@ package stringOperations.operators
 import stringOperations.operations._
 import stringOperations.utils.Utils.isBigger
 
-case class Negative(number: String = "0") extends StringNumber {
-  require(number forall { e => e.isDigit })
+case class Negative(integerPart: String = "0", fractionalPart: String = "0") extends StringNumber {
+  require(integerPart.forall( _.isDigit ) && fractionalPart.forall(_.isDigit))
 
-  val n: String = number.slice(0, number.length - 1).dropWhile( _ == '0') + number.last
+  val n: String = integerPart.slice(0, integerPart.length - 1).dropWhile( _ == '0') + integerPart.last
+  val m: String = fractionalPart
 
   def *(that: StringNumber): StringNumber =
     that match {
-      case Positive(otherNumber) => Negative(Mul(this.n, otherNumber))
-      case Negative(otherNumber) => Positive(Mul(this.n, otherNumber))
+      case Positive(i, f) => Negative(Mul(this.n, i))
+      case Negative(i, f) => Positive(Mul(this.n, i))
     }
 
 
   def +(that: StringNumber): StringNumber =
     that match {
-      case Negative(otherNumber) => Negative(Addi(this.n, otherNumber))
-      case Positive(otherNumber) =>
-        if (isBigger(this, that)) Negative(Sub(this.n, otherNumber))
-        else Positive(Sub(this.n, otherNumber))
+      case Negative(i, f) => Negative(Addi(this.n, i))
+      case Positive(i, f) =>
+        if (isBigger(this, that)) Negative(Sub(this.n, i))
+        else Positive(Sub(this.n, i))
     }
 
 
   def -(that: StringNumber): StringNumber =
     that match {
-      case Negative(otherNumber) =>
-        if(isBigger(this, that)) Negative(Sub(this.n, otherNumber))
-        else Positive(Sub(otherNumber, this.n))
-      case Positive(otherNumber) =>
-        if (isBigger(this, that)) Negative(Sub(this.n, otherNumber))
-        else Positive(Sub(otherNumber, this.n))
+      case Negative(i, f) =>
+        if(isBigger(this, that)) Negative(Sub(this.n, i))
+        else Positive(Sub(i, this.n))
+      case Positive(i, f) =>
+        if (isBigger(this, that)) Negative(Sub(this.n, i))
+        else Positive(Sub(i, this.n))
     }
 
 
   def %(that: StringNumber): StringNumber = {
-    require(that.number != "0")
+    require(that.integerPart != "0")
 
     if (isBigger(this, that))
       that match {
-        case Negative(otherNumber) => Positive(Mod(this.n, otherNumber))
-        case Positive(otherNumber) => Negative(Mod(this.n, otherNumber))
+        case Negative(i, f) => Positive(Mod(this.n, i))
+        case Positive(i, f) => Negative(Mod(this.n, i))
       }
     else
       that match {
-        case Negative(_) => Positive(this.n)
-        case Positive(_) => this
+        case Negative(_, _) => Positive(this.n)
+        case Positive(_, _) => this
       }
   }
 
 
   def /(that: StringNumber): StringNumber = {
-    require(that.number != "0")
+    require(that.integerPart != "0")
 
     that match {
-      case Negative(otherNumber) => Positive(Div(this.n, otherNumber))
-      case Positive(otherNumber) => Negative(Div(this.n, otherNumber))
+      case Negative(i, f) => Positive(Div(this.n, i))
+      case Positive(i, f) => Negative(Div(this.n, i))
     }
   }
 
 
   def ++ : StringNumber =
-    if(this.number == "1") Positive()
+    if(this.integerPart == "1") Positive()
     else Negative(Dec(this.n))
 
 
@@ -70,10 +71,10 @@ case class Negative(number: String = "0") extends StringNumber {
 
 
   def ^(that: StringNumber) : StringNumber = {
-    require(that match { case Positive(_) => true; case _ => false})
+    require(that match { case Positive(_, _) => true; case _ => false})
 
-    if(Mod(that.number, "2") == "0") Positive(FastExp(this.n, that.number))
-    else                             Negative(FastExp(this.n, that.number))
+    if(Mod(that.integerPart, "2") == "0") Positive(FastExp(this.n, that.integerPart))
+    else                             Negative(FastExp(this.n, that.integerPart))
   }
 
 
