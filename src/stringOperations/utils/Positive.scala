@@ -7,7 +7,7 @@ import stringOperations.utils.Utils._
 case class Positive(number: String = "0") extends StringNumber {
   require(number forall { p => p.isDigit })
 
-  val n: String = number.slice(0, number.length - 1) dropWhile { _ == "0" }
+  val n: String = number.slice(0, number.length - 1) dropWhile { _ == "0" } + number.last
 
   def *(that: StringNumber): StringNumber =
     that match {
