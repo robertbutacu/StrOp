@@ -55,10 +55,12 @@ case class Positive(number: String = "0") extends StringNumber {
   }
 
 
-  def ++ : StringNumber = ???
+  def ++ : StringNumber = Positive(Inc(this.n))
 
 
-  def -- : StringNumber = ???
+  def -- : StringNumber =
+    if(this.number == "0") Negative("1")
+    else Pos(Dec(this.n))
 
 
   def ^(other: StringNumber): StringNumber = {
@@ -66,10 +68,6 @@ case class Positive(number: String = "0") extends StringNumber {
 
     Positive(FastExp(this.n, other.number))
   }
-
-
-  def sqrt: StringNumber = ???
-
 
   def square: StringNumber = Positive(Sq(this.n))
 }

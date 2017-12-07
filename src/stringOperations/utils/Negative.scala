@@ -54,10 +54,12 @@ case class Negative(number: String = "0") extends StringNumber {
   }
 
 
-  def ++ : StringNumber = ???
+  def ++ : StringNumber =
+    if(this.number == "1") Positive()
+    else Negative(Dec(this.n))
 
 
-  def -- : StringNumber = ???
+  def -- : StringNumber = Negative(Inc(this.n))
 
 
   def ^(that: StringNumber) : StringNumber = {
