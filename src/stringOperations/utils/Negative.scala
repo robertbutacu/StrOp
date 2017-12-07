@@ -37,10 +37,17 @@ case class Negative(number: String = "0") extends StringNumber {
 
   def %(that: StringNumber): StringNumber = {
     require(that.number != "0")
-    that match {
-      case Negative(otherNumber) => Positive(Mod(this.n, otherNumber))
-      case Positive(otherNumber) => Negative(Mod(this.n, otherNumber))
-    }
+
+    if (isBigger(this, that))
+      that match {
+        case Negative(otherNumber) => Positive(Mod(this.n, otherNumber))
+        case Positive(otherNumber) => Negative(Mod(this.n, otherNumber))
+      }
+    else
+      that match {
+        case Negative(_) => Positive(this.n)
+        case Positive(_) => this
+      }
   }
 
 
