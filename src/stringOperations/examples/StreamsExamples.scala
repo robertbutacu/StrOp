@@ -1,5 +1,6 @@
 package stringOperations.examples
 
+import stringOperations.operators.StringNumber
 import stringOperations.utils._
 
 /**

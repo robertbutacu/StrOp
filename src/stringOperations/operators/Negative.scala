@@ -2,7 +2,6 @@ package stringOperations.operators
 
 import stringOperations.operations._
 import stringOperations.utils.Utils.isBigger
-import stringOperations.utils.StringNumber
 
 case class Negative(number: String = "0") extends StringNumber {
   require(number forall { e => e.isDigit })

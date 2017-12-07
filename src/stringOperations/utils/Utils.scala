@@ -1,5 +1,7 @@
 package stringOperations.utils
 
+import stringOperations.operators.StringNumber
+
 /**
   * Created by Robert-PC on 9/22/2017.
   */

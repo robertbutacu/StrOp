@@ -2,7 +2,6 @@ package stringOperations.operators
 
 import stringOperations.operations._
 import stringOperations.utils.Utils._
-import stringOperations.utils.{Pos, StringNumber}
 
 
 case class Positive(number: String = "0") extends StringNumber {
@@ -67,7 +66,7 @@ case class Positive(number: String = "0") extends StringNumber {
 
   def -- : StringNumber =
     if(this.number == "0") Negative("1")
-    else Pos(Dec(this.n))
+    else Positive(Dec(this.n))
 
 
   def ^(other: StringNumber): StringNumber = {
