@@ -5,7 +5,7 @@ import stringOperations.utils.Utils._
 
 
 case class Positive(number: String = "0") extends StringNumber {
-  require(number forall { p => p.toInt >= 0 && p.toInt <= 9 })
+  require(number forall { p => p.isDigit })
 
   val n: String = number
 
