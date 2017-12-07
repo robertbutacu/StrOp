@@ -6,7 +6,7 @@ import stringOperations.utils.Utils.isBigger
 case class Negative(number: String = "0") extends StringNumber {
   require(number forall { e => e.isDigit })
 
-  val n: String = number.slice(0, number.length - 1) dropWhile { _ == "0" } + number.last
+  val n: String = number.slice(0, number.length - 1).dropWhile( _ == '0') + number.last
 
   def *(that: StringNumber): StringNumber =
     that match {
