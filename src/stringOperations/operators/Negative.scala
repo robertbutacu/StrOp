@@ -11,28 +11,28 @@ case class Negative(integerPart: String = "0", fractionalPart: String = "0") ext
 
   override def *(that: StringNumber): StringNumber =
     that match {
-      case Positive(i, f) => Negative(Mul(this.n, i))
-      case Negative(i, f) => Positive(Mul(this.n, i))
+      case Positive(i, f) => Negative(Mul(this.n, i), f)
+      case Negative(i, f) => Positive(Mul(this.n, i), f)
     }
 
 
   override def +(that: StringNumber): StringNumber =
     that match {
-      case Negative(i, f) => Negative(Addi(this.n, i))
+      case Negative(i, f) => Negative(Addi(this.n, i), f)
       case Positive(i, f) =>
-        if (isBigger(this, that)) Negative(Sub(this.n, i))
-        else Positive(Sub(i, this.n))
+        if (isBigger(this, that)) Negative(Sub(this.n, i), f)
+        else Positive(Sub(i, this.n), f)
     }
 
 
   override def -(that: StringNumber): StringNumber =
     that match {
       case Negative(i, f) =>
-        if (isBigger(this, that)) Negative(Sub(this.n, i))
-        else Positive(Sub(i, this.n))
+        if (isBigger(this, that)) Negative(Sub(this.n, i), f)
+        else Positive(Sub(i, this.n), f)
       case Positive(i, f) =>
-        if (isBigger(this, that)) Negative(Sub(this.n, i))
-        else Positive(Sub(i, this.n))
+        if (isBigger(this, that)) Negative(Sub(this.n, i), f)
+        else Positive(Sub(i, this.n), f)
     }
 
 
@@ -41,12 +41,12 @@ case class Negative(integerPart: String = "0", fractionalPart: String = "0") ext
 
     if (isBigger(this, that))
       that match {
-        case Negative(i, f) => Positive(Mod(this.n, i))
-        case Positive(i, f) => Negative(Mod(this.n, i))
+        case Negative(i, f) => Positive(Mod(this.n, i), f)
+        case Positive(i, f) => Negative(Mod(this.n, i), f)
       }
     else
       that match {
-        case Negative(_, _) => Positive(this.n)
+        case Negative(_, _) => Positive(this.n, this.fractionalPart)
         case Positive(_, _) => this
       }
   }
@@ -56,8 +56,8 @@ case class Negative(integerPart: String = "0", fractionalPart: String = "0") ext
     require(that.integerPart != "0")
 
     that match {
-      case Negative(i, f) => Positive(Div(this.n, i))
-      case Positive(i, f) => Negative(Div(this.n, i))
+      case Negative(i, f) => Positive(Div(this.n, i), f)
+      case Positive(i, f) => Negative(Div(this.n, i), f)
     }
   }
 
