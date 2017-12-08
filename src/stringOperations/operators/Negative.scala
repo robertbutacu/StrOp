@@ -4,9 +4,9 @@ import stringOperations.operations._
 import stringOperations.utils.Utils.isBigger
 
 case class Negative(integerPart: String = "0", fractionalPart: String = "0") extends StringNumber {
-  require(integerPart.forall( _.isDigit ) && fractionalPart.forall(_.isDigit))
+  require(integerPart.forall(_.isDigit) && fractionalPart.forall(_.isDigit))
 
-  val n: String = integerPart.slice(0, integerPart.length - 1).dropWhile( _ == '0') + integerPart.last
+  val n: String = integerPart.slice(0, integerPart.length - 1).dropWhile(_ == '0') + integerPart.last
   val m: String = fractionalPart
 
   def *(that: StringNumber): StringNumber =
@@ -21,14 +21,14 @@ case class Negative(integerPart: String = "0", fractionalPart: String = "0") ext
       case Negative(i, f) => Negative(Addi(this.n, i))
       case Positive(i, f) =>
         if (isBigger(this, that)) Negative(Sub(this.n, i))
-        else Positive(Sub(this.n, i))
+        else Positive(Sub(i, this.n))
     }
 
 
   def -(that: StringNumber): StringNumber =
     that match {
       case Negative(i, f) =>
-        if(isBigger(this, that)) Negative(Sub(this.n, i))
+        if (isBigger(this, that)) Negative(Sub(this.n, i))
         else Positive(Sub(i, this.n))
       case Positive(i, f) =>
         if (isBigger(this, that)) Negative(Sub(this.n, i))
@@ -63,20 +63,21 @@ case class Negative(integerPart: String = "0", fractionalPart: String = "0") ext
 
 
   def ++ : StringNumber =
-    if(this.integerPart == "1") Positive()
+    if (this.integerPart == "1") Positive()
     else Negative(Dec(this.n))
 
 
   def -- : StringNumber = Negative(Inc(this.n))
 
 
-  def ^(that: StringNumber) : StringNumber = {
-    require(that match { case Positive(_, _) => true; case _ => false})
+  def ^(that: StringNumber): StringNumber = {
+    require(that match { case Positive(_, _) => true; case _ => false })
 
-    if(Mod(that.integerPart, "2") == "0") Positive(FastExp(this.n, that.integerPart))
-    else                             Negative(FastExp(this.n, that.integerPart))
+    if (Mod(that.integerPart, "2") == "0") Positive(FastExp(this.n, that.integerPart))
+    else Negative(FastExp(this.n, that.integerPart))
   }
 
 
   def square: StringNumber = Positive(Sq(this.n))
+
 }

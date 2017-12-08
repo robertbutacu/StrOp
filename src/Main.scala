@@ -1,7 +1,8 @@
-import stringOperations.operators.{Positive, StringNumber}
+import stringOperations.operators.{Negative, Positive}
+import stringOperations.utils.Implicits
 
-object Main extends App{
-  implicit def doubleToPositive[T: Numeric](i: T): Positive = Positive(i.toString.span(_ != '.')._1)
+object Main extends App with Implicits{
   println(Positive("2", "2") + 3.4)
-  println(3.0 + Positive("1"))
+  println(2 + Positive("2"))
+  println(Negative("3") - 3)
 }

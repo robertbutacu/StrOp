@@ -15,6 +15,16 @@ trait StringNumber extends Serializable{
 
   def apply(): String = integerPart
 
+  def +(other: StringNumber): StringNumber
+  def -(other: StringNumber): StringNumber
+  def %(other: StringNumber): StringNumber
+  def /(other: StringNumber): StringNumber
+  def ^(other: StringNumber): StringNumber
+  def ++ : StringNumber
+  def -- : StringNumber
+  def square: StringNumber
+  def *(other: StringNumber): StringNumber
+
   def to(another: StringNumber): List[StringNumber] =  getList(this, another, List())
 
   @tailrec

@@ -22,7 +22,7 @@ case class Positive(integerPart: String = "0", fractionalPart: String = "0") ext
       case Positive(i, f) => Positive(Addi(this.n, i), f)
       case Negative(i, f) =>
         if (isBigger(this, that)) Positive(Sub(this.n, i), f)
-        else Negative(Sub(this.n, i), f)
+        else Negative(Sub(i, this.n), f)
     }
 
 
@@ -75,30 +75,6 @@ case class Positive(integerPart: String = "0", fractionalPart: String = "0") ext
 
     Positive(FastExp(this.n, other.integerPart), this.fractionalPart)
   }
-
-  def +[T: Numeric](other: T): StringNumber = {
-    def getIntegerPart(a: String): String = a.span(_ != '.')._1
-    def getFractionalPart(a: String): String = a.span(_ != '.')._2.drop(1)
-
-    other match {
-      case a: Int =>
-        if(a < 0) this + Negative(a.toString.drop(1))
-        else this + Positive(a.toString)
-      case a: Double =>
-        if(a < 0) this + Negative(getIntegerPart(a.toString),  getFractionalPart(a.toString) + ".")
-        else this + Positive(getIntegerPart(a.toString),  getFractionalPart(a.toString))
-      case a: Float =>
-        if(a < 0) this + Negative(getIntegerPart(a.toString), getFractionalPart(a.toString))
-        else this + Positive(getIntegerPart(a.floor.toString),  getFractionalPart((a.ceil - a).toString))
-      case a: Short =>
-        if(a < 0) this + Negative(a.toString.drop(1))
-        else this + Positive(a.toString)
-      case a: String =>
-        if(a.head == '-') this + Negative(a.drop(1))
-        else this + Positive(a)
-    }
-  }
-
 
   def square: StringNumber = Positive(Sq(this.n))
 }
