@@ -13,8 +13,6 @@ trait StringNumber extends Serializable{
   def fractionalPart: String
 
 
-  def apply(): String = integerPart
-
   def +(other: StringNumber): StringNumber
   def -(other: StringNumber): StringNumber
   def %(other: StringNumber): StringNumber
