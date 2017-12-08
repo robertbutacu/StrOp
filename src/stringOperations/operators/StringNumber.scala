@@ -24,6 +24,7 @@ trait StringNumber extends Serializable{
   def -- : StringNumber
   def square: StringNumber
   def *(other: StringNumber): StringNumber
+  def ==(other: StringNumber): Boolean
 
   def to(another: StringNumber): List[StringNumber] =  getList(this, another, List())
 

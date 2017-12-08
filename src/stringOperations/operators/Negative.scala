@@ -9,14 +9,14 @@ case class Negative(integerPart: String = "0", fractionalPart: String = "0") ext
   val n: String = integerPart.slice(0, integerPart.length - 1).dropWhile(_ == '0') + integerPart.last
   val m: String = fractionalPart
 
-  def *(that: StringNumber): StringNumber =
+  override def *(that: StringNumber): StringNumber =
     that match {
       case Positive(i, f) => Negative(Mul(this.n, i))
       case Negative(i, f) => Positive(Mul(this.n, i))
     }
 
 
-  def +(that: StringNumber): StringNumber =
+  override def +(that: StringNumber): StringNumber =
     that match {
       case Negative(i, f) => Negative(Addi(this.n, i))
       case Positive(i, f) =>
@@ -25,7 +25,7 @@ case class Negative(integerPart: String = "0", fractionalPart: String = "0") ext
     }
 
 
-  def -(that: StringNumber): StringNumber =
+  override def -(that: StringNumber): StringNumber =
     that match {
       case Negative(i, f) =>
         if (isBigger(this, that)) Negative(Sub(this.n, i))
@@ -36,7 +36,7 @@ case class Negative(integerPart: String = "0", fractionalPart: String = "0") ext
     }
 
 
-  def %(that: StringNumber): StringNumber = {
+  override def %(that: StringNumber): StringNumber = {
     require(that.integerPart != "0")
 
     if (isBigger(this, that))
@@ -52,7 +52,7 @@ case class Negative(integerPart: String = "0", fractionalPart: String = "0") ext
   }
 
 
-  def /(that: StringNumber): StringNumber = {
+  override def /(that: StringNumber): StringNumber = {
     require(that.integerPart != "0")
 
     that match {
@@ -62,15 +62,15 @@ case class Negative(integerPart: String = "0", fractionalPart: String = "0") ext
   }
 
 
-  def ++ : StringNumber =
+  override def ++ : StringNumber =
     if (this.integerPart == "1") Positive()
     else Negative(Dec(this.n))
 
 
-  def -- : StringNumber = Negative(Inc(this.n))
+  override def -- : StringNumber = Negative(Inc(this.n))
 
 
-  def ^(that: StringNumber): StringNumber = {
+  override def ^(that: StringNumber): StringNumber = {
     require(that match { case Positive(_, _) => true; case _ => false })
 
     if (Mod(that.integerPart, "2") == "0") Positive(FastExp(this.n, that.integerPart))
@@ -78,6 +78,11 @@ case class Negative(integerPart: String = "0", fractionalPart: String = "0") ext
   }
 
 
-  def square: StringNumber = Positive(Sq(this.n))
+  override def square: StringNumber = Positive(Sq(this.n))
 
+  override def ==(other: StringNumber): Boolean =
+    other match {
+      case _: Positive => false
+      case _: Negative => this.n == other.integerPart && this.m == other.fractionalPart
+    }
 }
