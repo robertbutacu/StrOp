@@ -1,5 +1,5 @@
 import stringOperations.operators.Positive
 
 object Main extends App{
-  println(Positive("2") * Positive("10"))
+  println(Positive("2", "2") + 3.4)
 }
