@@ -1,7 +1,7 @@
 package stringOperations.examples
 
-import stringOperations.operators.StringNumber
-import stringOperations.utils._
+import stringOperations.operators.{Positive, StringNumber}
+import stringOperations.utils.Implicits.numericToStringNumber
 
 /**
   * Created by Robert-PC on 9/25/2017.
@@ -11,37 +11,32 @@ trait StreamsExamples{
   //TODO
   lazy val squares: Stream[StringNumber] = Stream.empty
 
-  def squaresUpUntil(i: StringNumber): Stream[StringNumber] = ??? /* {
-    if (i == Pos())
+  def squaresUpUntil(i: StringNumber): Stream[StringNumber] = {
+    if (i == Positive())
       Stream.empty
     else
       Stream.cons(
         i,
         squaresUpUntil(
-          compute(Decrement, Some(i)).getOrElse(Pos())
+          i --)
         )
-      )
-  }*/
+  }
 
-  def squaresBetween(start: StringNumber, end: StringNumber): Stream[StringNumber] = ??? /* {
+  def squaresBetween(start: StringNumber, end: StringNumber): Stream[StringNumber] = {
     if (start == end)
       Stream.empty
     else
       Stream.cons(
-        compute(Some(start), Multiply, Some(start)).get,
+        start square,
         squaresBetween(
-          compute(Increment, Some(start)).get, end
+          start ++, end
         )
       )
     }
 
-  lazy val fibsString: Stream[StringNumber] = Pos() #::
-    Pos("1") #::
+  lazy val fibsString: Stream[StringNumber] = Positive() #::
+    Positive("1") #::
     fibsString.zip(fibsString.tail).map { e =>
-      compute(
-        Some(e._1),
-        Add,
-        Some(e._2)
-      ).get
-    }*/
+      e._1 + e._2
+    }
 }
