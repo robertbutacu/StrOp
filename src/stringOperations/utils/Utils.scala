@@ -21,14 +21,24 @@ object Utils {
   def getFractionalPart(a: String): String = a.span(_ != '.')._2.drop(1)
 
 
-  /*
-  x is bigger than y in 2 cases:
-    1. longer size
-    2. same size, but, character for character, x is the first one to contain a bigger one.
- */
 
+
+  /*
+   x is bigger than y in 2 cases:
+   1. integer part is bigger
+   2. integer parts are equal, fractional part is bigger
+   */
   def isBigger(x: StringNumber, y: StringNumber): Boolean = {
-    if (x().length > y().length || (x().length == y().length && x() > y()))
+    def isIntegerPartBigger: Boolean =
+      compare(x.integerPart, y.integerPart)
+
+    def isFractionalPartBigger: Boolean =
+      x.integerPart == y.integerPart && compare(x.fractionalPart, y.fractionalPart)
+
+    def compare(a: String, b: String): Boolean =
+      a.length > b.length ||  (a.length == b.length && a > b)
+
+    if (isIntegerPartBigger || isFractionalPartBigger)
       true
     else
       false
