@@ -3,7 +3,7 @@ package stringOperations.utils
 import stringOperations.operators.{Negative, Positive, StringNumber}
 import stringOperations.utils.Utils.{getFractionalPart, getIntegerPart}
 
-trait Implicits {
+object Implicits {
   implicit def numericToStringNumber[T: Numeric](i: T): StringNumber = {
     i match {
       case a: Int =>
