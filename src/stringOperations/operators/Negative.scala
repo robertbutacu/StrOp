@@ -85,4 +85,6 @@ case class Negative(integerPart: String = "0", fractionalPart: String = "0") ext
       case _: Positive => false
       case _: Negative => this.n == other.integerPart && this.m == other.fractionalPart
     }
+
+  override def toString = s"""Positive(${this.n}, ${this.m})"""
 }
