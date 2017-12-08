@@ -5,15 +5,15 @@ import stringOperations.utils.Utils._
 
 
 case class Positive(integerPart: String = "0", fractionalPart: String = "0") extends StringNumber {
-  require(integerPart.forall{ p => p.isDigit } && fractionalPart.forall(_.isDigit))
+  require(integerPart.forall { p => p.isDigit } && fractionalPart.forall(_.isDigit))
 
-  val n: String = integerPart.slice(0, integerPart.length - 1).dropWhile{d => d == '0' } + integerPart.last
+  val n: String = integerPart.slice(0, integerPart.length - 1).dropWhile { d => d == '0' } + integerPart.last
   val m: String = fractionalPart
 
   override def *(that: StringNumber): StringNumber =
     that match {
-      case Positive(i, f) => Positive(Mul(this.n, i))
-      case Negative(i, f) => Negative(Mul(this.n, i))
+      case Positive(i, f) => Positive(Mul(this.n, i), f)
+      case Negative(i, f) => Negative(Mul(this.n, i), f)
     }
 
 
@@ -29,7 +29,7 @@ case class Positive(integerPart: String = "0", fractionalPart: String = "0") ext
   override def -(that: StringNumber): StringNumber = {
     that match {
       case Positive(i, f) =>
-        if(isBigger(this, that)) Positive(Sub(this.n, i), f)
+        if (isBigger(this, that)) Positive(Sub(this.n, i), f)
         else Negative(Sub(i, this.n), f)
       case Negative(i, f) => Positive(Addi(this.n, i), f)
     }
@@ -66,12 +66,12 @@ case class Positive(integerPart: String = "0", fractionalPart: String = "0") ext
 
 
   override def -- : StringNumber =
-    if(this.integerPart == "0") Negative("1", this.fractionalPart)
+    if (this.integerPart == "0") Negative("1", this.fractionalPart)
     else Positive(Dec(this.n), this.fractionalPart)
 
 
   override def ^(other: StringNumber): StringNumber = {
-    require(other match { case Positive(_, _) => true; case _ => false})
+    require(other match { case Positive(_, _) => true; case _ => false })
 
     Positive(FastExp(this.n, other.integerPart), this.fractionalPart)
   }
