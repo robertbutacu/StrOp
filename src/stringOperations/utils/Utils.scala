@@ -18,10 +18,11 @@ object Utils {
   def isDivisorZero(x: StringNumber): Boolean = x.integerPart == "0" && x.fractionalPart == "0"
 
   def getIntegerPart(a: String): String = a.span(_ != '.')._1
+
   def getFractionalPart(a: String): String = a.span(_ != '.')._2.drop(1)
 
-
-
+  def isBigger(x: String, y: String): Boolean =
+    x.length > y.length || (x.length == y.length && x > y)
 
   /*
    x is bigger than y in 2 cases:
@@ -36,7 +37,7 @@ object Utils {
       x.integerPart == y.integerPart && compare(x.fractionalPart, y.fractionalPart)
 
     def compare(a: String, b: String): Boolean =
-      a.length > b.length ||  (a.length == b.length && a > b)
+      a.length > b.length || (a.length == b.length && a > b)
 
     if (isIntegerPartBigger || isFractionalPartBigger)
       true
