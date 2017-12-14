@@ -38,7 +38,7 @@ object Sub {
     if(x == y)
       "0"
     else
-      compute(Utils.equalizeLength(x, y), Utils.equalizeLength(y, x)).dropWhile(_ == '0')
+      compute(Utils.equalizeLengthIntegerPart(x, y), Utils.equalizeLengthIntegerPart(y, x))
   }
 
   private def subtract(x: Char, y: Char, carry: Int): String = {

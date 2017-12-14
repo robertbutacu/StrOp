@@ -29,19 +29,47 @@ case class Positive(integerPart: String = "0", fractionalPart: String = "0") ext
 
   override def +(that: StringNumber): StringNumber =
     that match {
-      case Positive(i, f) => Positive(Addi(this.n, i), f)
-      case Negative(i, f) =>
-        if (this > that) Positive(Sub(this.n, i), f)
-        else Negative(Sub(i, this.n), f)
+      case Positive(i, f) =>
+        val fractionalPartsSum = Addi(
+          equalizeLengthFractionalPart(this.m, f),
+          equalizeLengthFractionalPart(f, this.m)
+        )
+
+        val maxLengthFractionalPart = Math.max(this.m.length, f.length)
+        val fractionalSumLength     = fractionalPartsSum.length
+
+        //addition can only carry 1
+        if(fractionalSumLength > maxLengthFractionalPart){
+          val carry = fractionalPartsSum.head.toString
+          Positive(Addi(Addi(this.n, carry), i), fractionalPartsSum.tail)
+        }
+        else Positive(Addi(this.n, i), fractionalPartsSum)
+
+      case _: Negative =>
+        if (this > that) this - not(that)
+        else that - this
     }
 
 
   override def -(that: StringNumber): StringNumber = {
     that match {
       case Positive(i, f) =>
-        if (this > that) Positive(Sub(this.n, i), f)
-        else Negative(Sub(i, this.n), f)
-      case Negative(i, f) => Positive(Addi(this.n, i), f)
+        val finalFractionalDigits = Math.max(this.m.length, f.length)
+        val thisNoFractional  = this.n ++ equalizeLengthFractionalPart(this.m, f)
+        val otherNoFractional = i ++ equalizeLengthFractionalPart(f, this.m)
+
+        if(isBigger(thisNoFractional, otherNoFractional)){
+          val subtractionResult = Sub(thisNoFractional, otherNoFractional)
+          Positive(subtractionResult.take(subtractionResult.length - finalFractionalDigits),
+            subtractionResult.takeRight(finalFractionalDigits))
+        }
+        else {
+          val subtractionResult = Sub(otherNoFractional, thisNoFractional)
+
+          Negative(subtractionResult.take(subtractionResult.length - finalFractionalDigits),
+            subtractionResult.takeRight(finalFractionalDigits))
+        }
+      case Negative(i, f) => this + Positive(i, f)
     }
   }
 
@@ -62,7 +90,7 @@ case class Positive(integerPart: String = "0", fractionalPart: String = "0") ext
   }
 
 
-  override def /(that: StringNumber): StringNumber = {
+  override def /(that: StringNumber)(numberOfDecimalApproximation: Int = 5): StringNumber = {
     require(that.integerPart != "0")
 
     that match {

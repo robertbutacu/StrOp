@@ -17,7 +17,7 @@ trait StringNumber extends Serializable {
   def +(other: StringNumber): StringNumber
   def -(other: StringNumber): StringNumber
   def %(other: StringNumber): StringNumber
-  def /(other: StringNumber): StringNumber
+  def /(other: StringNumber)(numberOfDecimalApproximation: Int = 5): StringNumber
   def ^(other: StringNumber): StringNumber
   def ++ : StringNumber
   def -- : StringNumber

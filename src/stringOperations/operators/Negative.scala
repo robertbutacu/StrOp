@@ -11,37 +11,22 @@ case class Negative(integerPart: String = "0", fractionalPart: String = "0") ext
 
   override def *(that: StringNumber): StringNumber =
     that match {
-      case Positive(i, f) =>
-        val product = Mul(join(this.n, this.m), join(i, f))
-
-        Negative(normalizeForIntegerPart(product, this.m, f),
-          normalizeForFractionalPart(product, this.m, f))
-
-      case Negative(i, f) =>
-        val product = Mul(join(this.n, this.m), join(i, f))
-
-        Positive(normalizeForIntegerPart(product, this.m, f),
-          normalizeForFractionalPart(product, this.m, f))
+      case _: Positive => that * this
+      case _: Negative => not(this) * not(that)
     }
 
 
   override def +(that: StringNumber): StringNumber =
     that match {
-      case Negative(i, f) => Negative(Addi(this.n, i), f)
-      case Positive(i, f) =>
-        if (isBigger(this, that)) Negative(Sub(this.n, i), f)
-        else Positive(Sub(i, this.n), f)
+      case _: Negative => not(this) + not(that)
+      case o: Positive => o + this
     }
 
 
   override def -(that: StringNumber): StringNumber =
     that match {
-      case Negative(i, f) =>
-        if (isBigger(this, that)) Negative(Sub(this.n, i), f)
-        else Positive(Sub(i, this.n), f)
-      case Positive(i, f) =>
-        if (isBigger(this, that)) Negative(Sub(this.n, i), f)
-        else Positive(Sub(i, this.n), f)
+      case _: Negative => not(that) + this
+      case _: Positive => that + this
     }
 
 
@@ -61,13 +46,10 @@ case class Negative(integerPart: String = "0", fractionalPart: String = "0") ext
   }
 
 
-  override def /(that: StringNumber): StringNumber = {
+  override def /(that: StringNumber)(numberOfDecimalApproximation: Int = 5): StringNumber = {
     require(that.integerPart != "0")
 
-    that match {
-      case Negative(i, f) => Positive(Div(this.n, i), f)
-      case Positive(i, f) => Negative(Div(this.n, i), f)
-    }
+    (not(this) / not(that))(5)
   }
 
 
@@ -109,4 +91,6 @@ case class Negative(integerPart: String = "0", fractionalPart: String = "0") ext
   override def <=(other: StringNumber): Boolean = this < other || this == other
 
   override def toString = s"""Negative(${this.n}, ${this.m})"""
+
+  def apply(other: Positive) = Negative(other.integerPart, other.fractionalPart)
 }

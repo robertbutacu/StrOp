@@ -24,7 +24,7 @@ object Addi {
         resultWithoutCarry.total
     }
 
-    compute(Utils.equalizeLength(x, y), Utils.equalizeLength(y, x))
+    compute(Utils.equalizeLengthIntegerPart(x, y), Utils.equalizeLengthIntegerPart(y, x))
   }
 
 

@@ -1,6 +1,6 @@
 package stringOperations.utils
 
-import stringOperations.operators.StringNumber
+import stringOperations.operators.{Negative, Positive, StringNumber}
 
 /**
   * Created by Robert-PC on 9/22/2017.
@@ -8,11 +8,18 @@ import stringOperations.operators.StringNumber
 case class Total(total: String = "", carry: Int = 0)
 
 object Utils {
-  def equalizeLength(first: String, second: String): String = {
+  def equalizeLengthIntegerPart(first: String, second: String): String = {
     if (first.length >= second.length)
       first
     else
       "0" * (second.length - first.length) ++ first
+  }
+
+  def equalizeLengthFractionalPart(first: String, second: String): String = {
+    if (first.length >= second.length)
+      first
+    else
+      first ++ ("0" * (second.length - first.length))
   }
 
   def isDivisorZero(x: StringNumber): Boolean = x.integerPart == "0" && x.fractionalPart == "0"
@@ -44,4 +51,10 @@ object Utils {
     else
       false
   }
+
+  def not(number: StringNumber): StringNumber =
+    number match {
+      case Positive(i, f) => Negative(i, f)
+      case Negative(i, f) => Positive(i, f)
+    }
 }
