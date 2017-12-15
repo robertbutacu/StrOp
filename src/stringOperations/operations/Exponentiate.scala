@@ -6,17 +6,17 @@ import scala.annotation.tailrec
   * Created by Robert-PC on 9/22/2017.
   */
 
-object Exp {
-  private[stringOperations] def apply(x: String, y: String): String = {
+private[stringOperations] object Exponentiate {
+  def apply(x: String, y: String): String = {
     @tailrec
     def computeExponentiation(x: String, y: String, product: String): String = {
       y match {
         case "0" => "1"
-        case "1" => Mul(x, product)
+        case "1" => Multiply(x, product)
         case _ => computeExponentiation(
           x,
-          Sub(y, "1"),
-          Mul(x, product)
+          Subtract(y, "1"),
+          Multiply(x, product)
         )
       }
     }

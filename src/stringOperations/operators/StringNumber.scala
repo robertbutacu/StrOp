@@ -1,6 +1,6 @@
 package stringOperations.operators
 
-import stringOperations.operations.Inc
+import stringOperations.operations.Increment
 
 import scala.annotation.tailrec
 
@@ -32,12 +32,14 @@ trait StringNumber extends Serializable {
   def <=(other: StringNumber): Boolean
 
 
-  def to(another: StringNumber): List[StringNumber] = getList(this, another, List())
+  def to(another: StringNumber): List[StringNumber] =
+    if( this > another) getList(this, another, List())
+    else List(this)
 
   @tailrec
   private def getList(start: StringNumber, end: StringNumber, result: List[StringNumber]): List[StringNumber] = {
     if (start == end) result :+ start
-    else getList(Positive(Inc(start.integerPart)), end, result :+ start)
+    else getList(Positive(Increment(start.integerPart)), end, result :+ start)
   }
 
   protected[this] def cleanIntegerPart: String =

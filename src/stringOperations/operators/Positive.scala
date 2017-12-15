@@ -13,16 +13,12 @@ case class Positive(integerPart: String = "0", fractionalPart: String = "0") ext
   override def *(that: StringNumber): StringNumber = {
     that match {
       case Positive(i, f) =>
-        val product = Mul(join(this.n, this.m), join(i, f))
+        val product = Multiply(join(this.n, this.m), join(i, f))
 
         Positive(normalizeForIntegerPart(product, this.m, f),
           normalizeForFractionalPart(product, this.m, f))
-
-      case Negative(i, f) =>
-        val product = Mul(join(this.n, this.m), join(i, f))
-
-        Negative(normalizeForIntegerPart(product, this.m, f),
-          normalizeForFractionalPart(product, this.m, f))
+      case _: Negative =>
+        not(this * not(that))
     }
   }
 
@@ -30,7 +26,7 @@ case class Positive(integerPart: String = "0", fractionalPart: String = "0") ext
   override def +(that: StringNumber): StringNumber =
     that match {
       case Positive(i, f) =>
-        val fractionalPartsSum = Addi(
+        val fractionalPartsSum = Add(
           equalizeLengthFractionalPart(this.m, f),
           equalizeLengthFractionalPart(f, this.m)
         )
@@ -41,9 +37,9 @@ case class Positive(integerPart: String = "0", fractionalPart: String = "0") ext
         //addition can only carry 1
         if(fractionalSumLength > maxLengthFractionalPart){
           val carry = fractionalPartsSum.head.toString
-          Positive(Addi(Addi(this.n, carry), i), fractionalPartsSum.tail)
+          Positive(Add(Add(this.n, carry), i), fractionalPartsSum.tail)
         }
-        else Positive(Addi(this.n, i), fractionalPartsSum)
+        else Positive(Add(this.n, i), fractionalPartsSum)
 
       case _: Negative =>
         if (this > that) this - not(that)
@@ -59,53 +55,56 @@ case class Positive(integerPart: String = "0", fractionalPart: String = "0") ext
         val otherNoFractional = i ++ equalizeLengthFractionalPart(f, this.m)
 
         if(isBigger(thisNoFractional, otherNoFractional)){
-          val subtractionResult = Sub(thisNoFractional, otherNoFractional)
+          val subtractionResult = Subtract(thisNoFractional, otherNoFractional)
           Positive(subtractionResult.take(subtractionResult.length - finalFractionalDigits),
             subtractionResult.takeRight(finalFractionalDigits))
         }
         else {
-          val subtractionResult = Sub(otherNoFractional, thisNoFractional)
+          val subtractionResult = Subtract(otherNoFractional, thisNoFractional)
 
           Negative(subtractionResult.take(subtractionResult.length - finalFractionalDigits),
             subtractionResult.takeRight(finalFractionalDigits))
         }
-      case Negative(i, f) => this + Positive(i, f)
+      case _: Negative => this + not(that)
     }
   }
 
 
   override def %(that: StringNumber): StringNumber = {
     require(that.integerPart != "0")
-
-    if (this > that)
-      that match {
-        case Positive(i, f) => Positive(Mod(this.n, i), f)
-        case Negative(i, f) => Negative(Mod(this.n, i), f)
-      }
-    else
-      that match {
-        case _: Negative => Negative(this.n)
-        case _           => this
-      }
-  }
-
-
-  override def /(that: StringNumber)(numberOfDecimalApproximation: Int = 5): StringNumber = {
-    require(that.integerPart != "0")
-
     that match {
-      case Positive(i, f) => Positive(Div(this.n, i), f)
-      case Negative(i, f) => Negative(Div(this.n, i), f)
+      case Positive(i, f) => Positive(Modulus(this.n, i), f)
+      case Negative(i, f) => Negative(Modulus(this.n, i), f)
     }
   }
 
 
-  override def ++ : StringNumber = Positive(Inc(this.n), this.fractionalPart)
+  override def /(that: StringNumber)(numberOfDecimalApproximation: Int = 0): StringNumber = {
+    require(that.integerPart != "0" || (that.integerPart == "0" && that.fractionalPart != "0"))
+
+    that match {
+      case Positive(i, f) =>
+        val wholeDivisor = (i ++ f).dropWhile(_ == '0')
+        val updatedDividendIntegerPart = this.n ++ this.m.slice(0, f.length)
+        val updatedDividendFractionalPart = this.m.slice(f.length, this.m.length) ++ ("0" * numberOfDecimalApproximation)
+
+        //println(s"${updatedDividendIntegerPart} / ${wholeDivisor} \n" +
+        //s"${updatedDividendIntegerPart} % ${wholeDivisor} ++ ${updatedDividendFractionalPart} / ${wholeDivisor}\n\n")
+        Positive(Divide(updatedDividendIntegerPart, wholeDivisor),
+          Divide(Modulus(updatedDividendIntegerPart, wholeDivisor) ++ updatedDividendFractionalPart, wholeDivisor))
+
+      case _: Negative =>
+        not((this / not(that))(numberOfDecimalApproximation))
+    }
+  }
+
+
+  override def ++ : StringNumber = Positive(Increment(this.n), this.fractionalPart)
 
 
   override def -- : StringNumber =
     if (this.integerPart == "0") Negative("1", this.fractionalPart)
-    else Positive(Dec(this.n), this.fractionalPart)
+    else Positive(Decrement(this.n), this.fractionalPart)
 
 
   override def ^(other: StringNumber): StringNumber = {
@@ -114,7 +113,7 @@ case class Positive(integerPart: String = "0", fractionalPart: String = "0") ext
     Positive(FastExp(this.n, other.integerPart), this.fractionalPart)
   }
 
-  override def square: StringNumber = Positive(Sq(this.n))
+  override def square: StringNumber = Positive(Square(this.n))
 
   override def ==(other: StringNumber): Boolean =
     other match {

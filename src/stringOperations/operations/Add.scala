@@ -6,8 +6,8 @@ import stringOperations.utils.{Total, Utils}
   * Created by Robert-PC on 9/21/2017.
   */
 
-object Addi {
-  private[stringOperations] def apply(x: String, y: String): String = {
+private[stringOperations] object Add {
+  def apply(x: String, y: String): String = {
     def compute(x: String, y: String): String = {
       val resultWithoutCarry: Total =
         x.zip(y)

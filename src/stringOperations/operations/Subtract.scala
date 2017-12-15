@@ -23,8 +23,8 @@ import stringOperations.utils.{Total, Utils}
       Result : 11.
  */
 
-object Sub {
-  private[stringOperations] def apply(x: String, y: String): String = {
+private[stringOperations] object Subtract {
+  def apply(x: String, y: String): String = {
     def compute(x: String, y: String): String = {
       x.zip(y)
         .foldRight(Total())((curr, acc) =>
@@ -32,10 +32,10 @@ object Sub {
             subtract(curr._1, curr._2, acc.carry) ++ acc.total,
             carry(curr._1, curr._2, acc.carry)
           )
-        ).total
+        ).total.dropWhile(_ == '0')
     }
 
-    if(x == y)
+    if(x == y || Utils.isBigger(y, x))
       "0"
     else
       compute(Utils.equalizeLengthIntegerPart(x, y), Utils.equalizeLengthIntegerPart(y, x))

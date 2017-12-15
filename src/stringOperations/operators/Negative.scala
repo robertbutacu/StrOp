@@ -33,10 +33,10 @@ case class Negative(integerPart: String = "0", fractionalPart: String = "0") ext
   override def %(that: StringNumber): StringNumber = {
     require(that.integerPart != "0")
 
-    if (isBigger(this, that))
+    if (this > that)
       that match {
-        case Negative(i, f) => Positive(Mod(this.n, i), f)
-        case Positive(i, f) => Negative(Mod(this.n, i), f)
+        case Negative(i, f) => Positive(Modulus(this.n, i), f)
+        case Positive(i, f) => Negative(Modulus(this.n, i), f)
       }
     else
       that match {
@@ -46,27 +46,27 @@ case class Negative(integerPart: String = "0", fractionalPart: String = "0") ext
   }
 
 
-  override def /(that: StringNumber)(numberOfDecimalApproximation: Int = 5): StringNumber = {
+  override def /(that: StringNumber)(numberOfDecimalApproximation: Int = 0): StringNumber = {
     require(that.integerPart != "0")
 
-    (not(this) / not(that))(5)
+    (not(this) / not(that))(numberOfDecimalApproximation)
   }
 
 
   override def ++ : StringNumber =
     if (this.integerPart == "1") Positive()
-    else Negative(Dec(this.n), this.m)
+    else Negative(Decrement(this.n), this.m)
 
-  override def -- : StringNumber = Negative(Inc(this.n), this.m)
+  override def -- : StringNumber = Negative(Increment(this.n), this.m)
 
   override def ^(that: StringNumber): StringNumber = {
     require(that match { case Positive(_, _) => true; case _ => false })
 
-    if (Mod(that.integerPart, "2") == "0") Positive(FastExp(this.n, that.integerPart))
+    if (Modulus(that.integerPart, "2") == "0") Positive(FastExp(this.n, that.integerPart))
     else Negative(FastExp(this.n, that.integerPart))
   }
 
-  override def square: StringNumber = Positive(Sq(this.n))
+  override def square: StringNumber = Positive(Square(this.n))
 
   override def ==(other: StringNumber): Boolean =
     other match {

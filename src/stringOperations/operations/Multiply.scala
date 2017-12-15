@@ -6,16 +6,17 @@ import stringOperations.utils.Total
   * Created by Robert-PC on 9/21/2017.
   */
 
-object Mul {
+private[stringOperations] object Multiply {
+
   case class ProductTotal(product: String = "0", traillingZeroes: Int = 0)
 
-  private[stringOperations] def apply(x: String, y: String): String = {
+  def apply(x: String, y: String): String = {
     x.map(digit =>
       multiplyByDigit(y, digit)
     )
       .foldRight(ProductTotal())((curr, acc) =>
         ProductTotal(
-          Addi(curr ++ ("0" * acc.traillingZeroes), acc.product),
+          Add(curr ++ ("0" * acc.traillingZeroes), acc.product),
           acc.traillingZeroes + 1
         )
       )

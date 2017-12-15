@@ -1,5 +1,6 @@
 package stringOperations.utils
 
+import stringOperations.operations.Modulus
 import stringOperations.operators.{Negative, Positive, StringNumber}
 
 /**
@@ -8,19 +9,15 @@ import stringOperations.operators.{Negative, Positive, StringNumber}
 case class Total(total: String = "", carry: Int = 0)
 
 object Utils {
-  def equalizeLengthIntegerPart(first: String, second: String): String = {
-    if (first.length >= second.length)
-      first
-    else
-      "0" * (second.length - first.length) ++ first
-  }
+  def equalizeLengthIntegerPart(first: String, second: String): String =
+    if (first.length >= second.length) first
+    else "0" * (second.length - first.length) ++ first
 
-  def equalizeLengthFractionalPart(first: String, second: String): String = {
-    if (first.length >= second.length)
-      first
-    else
-      first ++ ("0" * (second.length - first.length))
-  }
+
+  def equalizeLengthFractionalPart(first: String, second: String): String =
+    if (first.length >= second.length) first
+    else first ++ ("0" * (second.length - first.length))
+
 
   def isDivisorZero(x: StringNumber): Boolean = x.integerPart == "0" && x.fractionalPart == "0"
 
@@ -37,19 +34,17 @@ object Utils {
    2. integer parts are equal, fractional part is bigger
    */
   def isBigger(x: StringNumber, y: StringNumber): Boolean = {
+    def compare(a: String, b: String): Boolean =
+      a.length > b.length || (a.length == b.length && a > b)
+
     def isIntegerPartBigger: Boolean =
       compare(x.integerPart, y.integerPart)
 
     def isFractionalPartBigger: Boolean =
       x.integerPart == y.integerPart && compare(x.fractionalPart, y.fractionalPart)
 
-    def compare(a: String, b: String): Boolean =
-      a.length > b.length || (a.length == b.length && a > b)
-
-    if (isIntegerPartBigger || isFractionalPartBigger)
-      true
-    else
-      false
+    if (isIntegerPartBigger || isFractionalPartBigger) true
+    else false
   }
 
   def not(number: StringNumber): StringNumber =
@@ -57,4 +52,14 @@ object Utils {
       case Positive(i, f) => Negative(i, f)
       case Negative(i, f) => Positive(i, f)
     }
+
+  def max(one: StringNumber, two: StringNumber): StringNumber =
+    if (isBigger(one, two)) one
+    else two
+
+  def min(one: StringNumber, two: StringNumber): StringNumber =
+    if (isBigger(one, two)) two
+    else one
+
+  def isPrime(number: StringNumber): Boolean = (Positive("2") to number) forall { n => number % n != Positive()}
 }

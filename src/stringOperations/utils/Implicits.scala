@@ -4,20 +4,19 @@ import stringOperations.operators.{Negative, Positive, StringNumber}
 import stringOperations.utils.Utils.{getFractionalPart, getIntegerPart}
 
 object Implicits {
-  implicit def numericToStringNumber[T: Numeric](i: T): StringNumber = {
+  implicit def numericToStringNumber[T: Numeric](i: T): StringNumber =
     i match {
       case a: Int =>
-        if(a < 0) Negative(a.toString.drop(1))
+        if (a < 0) Negative(a.toString.tail)
         else Positive(a.toString)
       case a: Double =>
-        if(a < 0) Negative(getIntegerPart(a.toString.drop(1)),  getFractionalPart(a.toString.drop(1)))
-        else Positive(getIntegerPart(a.toString),  getFractionalPart(a.toString))
+        if (a < 0) Negative(getIntegerPart(a.toString.tail), getFractionalPart(a.toString.tail))
+        else Positive(getIntegerPart(a.toString), getFractionalPart(a.toString))
       case a: Float =>
-        if(a < 0) Negative(getIntegerPart(a.toString.drop(1)), getFractionalPart(a.toString.drop(1)))
-        else Positive(getIntegerPart(a.floor.toString),  getFractionalPart((a.ceil - a).toString))
+        if (a < 0) Negative(getIntegerPart(a.toString.tail), getFractionalPart(a.toString.tail))
+        else Positive(getIntegerPart(a.floor.toString), getFractionalPart((a.ceil - a).toString))
       case a: Short =>
-        if(a < 0) Negative(a.toString.drop(1))
+        if (a < 0) Negative(a.toString.tail)
         else Positive(a.toString)
     }
-  }
 }

@@ -1,8 +1,11 @@
 import stringOperations.examples.StreamsExamples
-import stringOperations.operators.{Negative, Positive}
+import stringOperations.operators.{Negative, Positive, StringNumber}
 import stringOperations.utils.Implicits.numericToStringNumber
 
 object Main extends App with StreamsExamples{
-  //println(Positive("2", "9") - (-2.0000001))
-  println((Negative("2", "92") / Negative("2","900011"))(10))
+
+  //TODO buggy division; speed up division/modulus
+  //println((Positive("0", "773") / Negative("5", "1"))(5))
+  //println(squaresUpUntil(Positive("1000")).toList)
+  println(primes take 20 toList)
 }
