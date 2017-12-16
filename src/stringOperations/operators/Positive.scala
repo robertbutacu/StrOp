@@ -86,7 +86,8 @@ case class Positive(integerPart: String = "0", fractionalPart: String = "0") ext
       case Positive(i, f) =>
         val wholeDivisor = (i ++ f).dropWhile(_ == '0')
         val updatedDividendIntegerPart = this.n ++ this.m.slice(0, f.length)
-        val updatedDividendFractionalPart = this.m.slice(f.length, this.m.length) ++ ("0" * numberOfDecimalApproximation)
+        val updatedDividendFractionalPart = this.m.slice(f.length, this.m.length) ++
+          ("0" * numberOfDecimalApproximation)
 
         //println(s"${updatedDividendIntegerPart} / ${wholeDivisor} \n" +
         //s"${updatedDividendIntegerPart} % ${wholeDivisor} ++ ${updatedDividendFractionalPart} / ${wholeDivisor}\n\n")

@@ -40,8 +40,8 @@ case class Negative(integerPart: String = "0", fractionalPart: String = "0") ext
       }
     else
       that match {
-        case Negative(_, _) => Positive(this.n, this.fractionalPart)
-        case Positive(_, _) => this
+        case _: Negative => not(this)
+        case _: Positive => this
       }
   }
 
