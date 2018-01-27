@@ -35,7 +35,7 @@ trait StringNumber extends Serializable {
 
 
   def to(another: StringNumber): List[StringNumber] =
-    if( this > another) getList(this, another, List())
+    if( this < another) getList(this, another, List())
     else List(this)
 
   @tailrec

@@ -23,7 +23,9 @@ object Utils {
     if (isBigger(one, two)) two
     else one
 
-  def isPrime(number: StringNumber): Boolean = (Positive("2") to number) forall { n => number % n != Positive()}
+  def isPrime(number: StringNumber): Boolean =
+    if(number == Positive("2")) true
+    else (Positive("2") to (number--)) forall { n => number % n != Positive()}
 
   private[stringOperations] def equalizeLengthIntegerPart(first: String, second: String): String =
     if (first.length >= second.length) first
