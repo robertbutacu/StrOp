@@ -31,6 +31,8 @@ trait StringNumber extends Serializable {
   def >=(other: StringNumber): Boolean
   def <=(other: StringNumber): Boolean
 
+  def numberOfDigits: Int = integerPart.length
+
 
   def to(another: StringNumber): List[StringNumber] =
     if( this > another) getList(this, another, List())

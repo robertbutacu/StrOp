@@ -2,10 +2,13 @@ import stringOperations.examples.StreamsExamples
 import stringOperations.operators.{Negative, Positive, StringNumber}
 import stringOperations.utils.Implicits.numericToStringNumber
 
-object Main extends App with StreamsExamples{
+object Main extends App with StreamsExamples {
+  def go(input: StringNumber): Unit = {
+    val newNumber = input * 2
+    println(newNumber.numberOfDigits + "\t" + newNumber)
+    go(newNumber)
+  }
 
-  //TODO buggy division; speed up division/modulus
-  println((Positive("0", "773") / Negative("5", "1"))(5))
-  //println(squaresUpUntil(Positive("1000")).toList)
-  println(primes take 20 toList)
+  //go(Positive("1"))
+  println(Positive("123123123") + 123456)
 }
