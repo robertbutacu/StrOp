@@ -1,0 +1,5 @@
+package operators
+
+class NegativeTests {
+
+}

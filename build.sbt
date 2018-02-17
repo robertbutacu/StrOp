@@ -1,4 +1,4 @@
-name := "k-means"
+name := "str-op"
 
 version := "0.1"
 
