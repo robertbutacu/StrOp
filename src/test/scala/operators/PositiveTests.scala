@@ -30,4 +30,12 @@ class PositiveTests extends FlatSpec {
     //assert(Positive() + Negative() === Positive())
   }
 
+  "When adding a positive(smaller) and a negative number " should "return a negative number " in {
+    //assert(Positive() + Negative() === Positive())
+    assert(Positive("2") + Negative("3") === Negative("1"))
+    //assert(Positive("5", "2") + Negative("6") === Negative("0", "8"))
+    assert(Positive("1000") + Negative("1001") === Negative("1"))
+    //assert(Positive("10", "8") + Negative("10", "9") === Negative("0", "1"))
+  }
+
 }
