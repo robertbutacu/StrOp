@@ -1,6 +1,5 @@
 package stringOperations.utils
 
-import stringOperations.operations.Modulus
 import stringOperations.operators.{Negative, Positive, StringNumber}
 
 /**
