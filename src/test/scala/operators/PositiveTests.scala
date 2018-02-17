@@ -38,4 +38,55 @@ class PositiveTests extends FlatSpec {
     //assert(Positive("10", "8") + Negative("10", "9") === Negative("0", "1"))
   }
 
+  "When subtracting 2 positive numbers" should "return the correct result" in {
+
+  }
+
+  "When subtracting a negative from a positive" should "return the sum of the 2" in {
+
+  }
+
+  "When multiplying 2 positive numbers" should "return the correct result" in {
+
+  }
+
+  "When multiplying a positive with a negative" should "Return a negative number" in {
+
+  }
+
+  "When dividing 2 positive numbers" should "return the division" in {
+
+  }
+
+  "When dividing a positive with a negative" should "return a negative division" in {
+
+  }
+
+  "When using modulus between 2 positives" should "return a positive" in {
+
+  }
+
+  "When using modulus between positive and negative" should "Return a negative" in {
+
+  }
+
+  "When using square " should "return square" in {
+
+  }
+
+  "When using exponentiation on a positive number" should "Return the correct result" in {
+
+  }
+
+  "When using inc " should "return positive + 1" in {
+
+  }
+
+  "When using dec " should "return positive - 1" in {
+
+  }
+
+  "When using sqrt on a positive" should "Return the sqrt" in {
+
+  }
 }
