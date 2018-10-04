@@ -13,6 +13,12 @@ trait StringNumber extends Serializable {
 
   def fractionalPart: String
 
+  def negate: StringNumber = {
+    this match {
+      case Positive(i, f) => Negative(i, f)
+      case Negative(i, f) => Positive(i, f)
+    }
+  }
 
   def +(other: StringNumber): StringNumber
   def -(other: StringNumber): StringNumber
