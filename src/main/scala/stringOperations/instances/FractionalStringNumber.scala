@@ -1,45 +1,33 @@
 package stringOperations.instances
 
-import javax.management.BadStringOperationException
 import stringOperations.operators.{Positive, StringNumber}
 
 import scala.language.postfixOps
 
 object FractionalStringNumber {
   implicit def fractionalStringNumber: Fractional[StringNumber] = new Fractional[StringNumber] {
-    override def div(x: StringNumber, y: StringNumber): StringNumber = x // y
+    val n = implicitly[Numeric[StringNumber]]
 
-    override def plus(x: StringNumber, y: StringNumber): StringNumber = x + y
+    override def div(x: StringNumber, y: StringNumber): StringNumber = x./(y)()
 
-    override def minus(x: StringNumber, y: StringNumber): StringNumber = x - y
+    override def plus(x: StringNumber, y: StringNumber): StringNumber = n.plus(x, y)
 
-    override def times(x: StringNumber, y: StringNumber): StringNumber = x * y
+    override def minus(x: StringNumber, y: StringNumber): StringNumber = n.minus(x, y)
 
-    override def negate(x: StringNumber): StringNumber = x negate
+    override def times(x: StringNumber, y: StringNumber): StringNumber = n.times(x, y)
 
-    override def fromInt(x: Int): StringNumber = Positive(x.toString)
+    override def negate(x: StringNumber): StringNumber = n.negate(x)
 
-    override def toInt(x: StringNumber): Int =
-      if(x.integerPart.length > Int.MaxValue.toString.length)
-        throw new BadStringOperationException("StringNumber is too big!")
-      else x.integerPart.toInt
+    override def fromInt(x: Int): StringNumber = n.fromInt(x)
 
-    override def toLong(x: StringNumber): Long =
-      if(x.integerPart.length > Int.MaxValue.toString.length)
-        throw new BadStringOperationException("StringNumber is too big!")
-      else x.integerPart.toInt
+    override def toInt(x: StringNumber): Int = n.toInt(x)
 
-    override def toFloat(x: StringNumber): Float =
-      if(x.integerPart.length > Float.MaxValue.toString.length)
-        throw new BadStringOperationException("StringNumber is too big!")
-      else x.integerPart.toInt
+    override def toLong(x: StringNumber): Long = n.toLong(x)
 
-    override def toDouble(x: StringNumber): Double =
-      if(x.integerPart.length > Double.MaxValue.toString.length)
-        throw new BadStringOperationException("StringNumber is too big!")
-      else x.integerPart.toInt
+    override def toFloat(x: StringNumber): Float = n.toFloat(x)
 
-    override def compare(x: StringNumber, y: StringNumber): Int =
-      if(x == y) 0 else if(x > y) 1 else -1
+    override def toDouble(x: StringNumber): Double = n.toDouble(x)
+
+    override def compare(x: StringNumber, y: StringNumber): Int = n.compare(x, y)
   }
 }
